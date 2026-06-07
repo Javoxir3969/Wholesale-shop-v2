@@ -74,9 +74,13 @@ services:
     container_name: wholesale_nginx
     restart: unless-stopped
     ports:
-      - "80:80"       # The ONLY entry point from outside
+      - "80:80"
+      - "443:443"
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      # Mount Let's Encrypt certs from the host into the container.
+      # On the server these typically live at /etc/letsencrypt.
+      - /etc/letsencrypt:/etc/letsencrypt:ro
     depends_on:
       - app
     networks:
